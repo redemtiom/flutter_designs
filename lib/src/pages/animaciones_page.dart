@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
@@ -22,16 +22,47 @@ class CuadradoAnimado extends StatefulWidget {
   State<CuadradoAnimado> createState() => _CuadradoAnimadoState();
 }
 
-class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProviderStateMixin{
+class _CuadradoAnimadoState extends State<CuadradoAnimado>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> rotacion;
+  late Animation<double> opacidad;
+  late Animation<double> opacidadOut;
+  late Animation<double> mover;
+  late Animation<double> agrandar;
 
   @override
   void initState() {
     // TODO: implement initState
-    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 4000));
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 4000));
 
-    rotacion = Tween(begin: 0.0, end: 2.0).animate(controller);
+    rotacion = Tween(begin: 0.0, end: 2.0 * math.pi).animate(
+      CurvedAnimation(parent: controller, curve: Curves.easeOut),
+    );
+
+    opacidad = Tween(begin: 0.1, end: 1.0).animate(CurvedAnimation(
+      parent: controller,
+      curve: const Interval(0, 0.25, curve: Curves.easeOut),
+    ));
+
+    opacidadOut = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: controller,
+      curve: Interval(0.75, 1.0, curve: Curves.easeOut),
+    ));
+
+    mover = Tween(begin: 0.0, end: 200.0).animate(
+      CurvedAnimation(parent: controller, curve: Curves.easeOut),
+    );
+
+    agrandar = Tween(begin: 0.0, end: 2.0).animate(controller);
+
+    controller.addListener(() {
+      print('controller value: ${controller.value}');
+      if (controller.status == AnimationStatus.completed) {
+        controller.reset();
+      }
+    });
     super.initState();
   }
 
@@ -44,7 +75,26 @@ class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return _Rectangle();
+    controller.forward();
+
+    return AnimatedBuilder(
+        animation: controller,
+        child: const _Rectangle(),
+        builder: (BuildContext context, Widget? childRectangulo) {
+          return Transform.translate(
+            offset: Offset(mover.value, 0.0),
+            child: Transform.rotate(
+              angle: rotacion.value,
+              child: Opacity(
+                opacity: opacidad.value - opacidadOut.value,
+                child: Transform.scale(
+                  scale: agrandar.value,
+                  child: childRectangulo,
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
 
