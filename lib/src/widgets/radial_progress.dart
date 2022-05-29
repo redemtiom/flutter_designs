@@ -72,6 +72,14 @@ class _RadialProgressState extends State<RadialProgress>
 }
 
 class _MiRadialProgress extends CustomPainter {
+  final Rect rect = Rect.fromCircle(center: const Offset(0, 0), radius: 180.0);
+
+  static const Gradient gradiente = LinearGradient(colors: [
+    Color(0xffC012FF),
+    Color(0xff6D05E8),
+    Colors.red
+  ]);
+
   final double porcentaje;
   final Color colorPrimario;
   final Color colorSecundario;
@@ -87,6 +95,7 @@ class _MiRadialProgress extends CustomPainter {
     final paint = Paint()
       ..strokeWidth = grosorPrimario
       ..color = colorSecundario
+      //..shader = gradiente.createShader(rect)
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
@@ -114,7 +123,7 @@ class _MiRadialProgress extends CustomPainter {
       ..maskFilter = const MaskFilter.blur(BlurStyle.outer, 10.0);
 
     //canvas.drawShadow(Path()..addArc(Rect.fromCircle(center: center, radius: radius), -pi / 2, arcAngle), colorPrimario, 1.0, true);
-    //canvas.drawColor(color, BlendMode.luminosity);   
+    //canvas.drawColor(color, BlendMode.luminosity);
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),

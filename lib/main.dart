@@ -1,6 +1,7 @@
 //import 'package:disenos_app/src/pages/animaciones_page.dart';
 //import 'package:disenos_app/src/retos/cuadrado_animado_reto.dart';
 import 'package:disenos_app/src/pages/graficas_circulares_page.dart';
+import 'package:disenos_app/src/pages/slideshow_page.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:disenos_app/src/pages/headers_page.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const GraficasCircularesPage(),
+      home: const SlideShowPage(),
     );
   }
 }
