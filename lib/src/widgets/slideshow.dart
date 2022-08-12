@@ -7,27 +7,44 @@ class Slideshow extends StatelessWidget {
       {Key? key,
       required this.slides,
       this.primaryColor = Colors.blue,
-      this.secondaryColor = Colors.grey})
+      this.secondaryColor = Colors.grey,
+      this.primaryBullet = 12.0,
+      this.secondaryBullet = 12.0})
       : super(key: key);
 
   final List<Widget> slides;
   final Color primaryColor;
   final Color secondaryColor;
+  final double primaryBullet;
+  final double secondaryBullet;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => _SlideshowModel(primaryColor, secondaryColor),
-      child: Center(
-        child: Column(
-          children: [
-            Expanded(child: _Slides(slides: slides)),
-            _Dots(
-              length: slides.length,
-            ),
-          ],
-        ),
-      ),
+      create: (_) => _SlideshowModel(),
+      child: Center(child: Builder(
+        builder: (context) {
+          Future.microtask(() {
+            Provider.of<_SlideshowModel>(context, listen: false).primaryColor =
+                primaryColor;
+            Provider.of<_SlideshowModel>(context, listen: false)
+                .secondaryColor = secondaryColor;
+            Provider.of<_SlideshowModel>(context, listen: false).primaryBullet =
+                primaryBullet;
+            Provider.of<_SlideshowModel>(context, listen: false)
+                .secondaryBullet = secondaryBullet;
+          });
+
+          return Column(
+            children: [
+              Expanded(child: _Slides(slides: slides)),
+              _Dots(
+                length: slides.length,
+              ),
+            ],
+          );
+        },
+      )),
     );
   }
 }
@@ -57,18 +74,29 @@ class _Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final pageViewIndex = Provider.of<_SlideshowModel>(context).currentPage;
     final ssModel = Provider.of<_SlideshowModel>(context);
+    final double dotSize;
+    final Color color;
+    // final dotSize = (ssModel.currentPage == index)
+    //     ? ssModel.primaryBullet
+    //     : ssModel.secondaryBullet;
+
+    if (ssModel.currentPage >= index - 0.5 &&
+        ssModel.currentPage < index + 0.5) {
+      dotSize = ssModel.primaryBullet;
+      color = ssModel.primaryColor;
+    } else {
+      dotSize = ssModel.secondaryBullet;
+      color = ssModel.secondaryColor;
+    }
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      width: 12,
-      height: 12,
+      width: dotSize,
+      height: dotSize,
       margin: const EdgeInsets.symmetric(horizontal: 5.0),
       decoration: BoxDecoration(
-        color: (ssModel.currentPage >= index - 0.5 && ssModel.currentPage < index + 0.5)
-            ? ssModel.primaryColor
-            : ssModel.secondaryColor,
+        color: color,
         shape: BoxShape.circle,
       ),
     );
@@ -90,8 +118,6 @@ class _SlidesState extends State<_Slides> {
   @override
   void initState() {
     pageViewController.addListener(() {
-      //print('Pagina actual: ${pageViewController.page}');
-      // Actualizar el provider, sliderModel
       Provider.of<_SlideshowModel>(context, listen: false).currentPage =
           pageViewController.page!;
     });
@@ -136,16 +162,30 @@ class _Slide extends StatelessWidget {
 
 class _SlideshowModel with ChangeNotifier {
   double _currentPage = 0;
-  late Color _primaryColor;
-  late Color _secondaryColor;
-
-  _SlideshowModel(this._primaryColor, this._secondaryColor);
+  Color _primaryColor = Colors.blue;
+  Color _secondaryColor = Colors.grey;
+  double _primaryBullet = 12;
+  double _secondaryBullet = 12;
 
   double get currentPage => _currentPage;
 
   Color get primaryColor => _primaryColor;
 
   Color get secondaryColor => _secondaryColor;
+
+  double get primaryBullet => _primaryBullet;
+
+  double get secondaryBullet => _secondaryBullet;
+
+  set primaryBullet(double value) {
+    _primaryBullet = value;
+    //notifyListeners();
+  }
+
+  set secondaryBullet(double value) {
+    _secondaryBullet = value;
+    //notifyListeners();
+  }
 
   set currentPage(double currentPage) {
     _currentPage = currentPage;
@@ -154,7 +194,7 @@ class _SlideshowModel with ChangeNotifier {
 
   set primaryColor(Color color) {
     _primaryColor = color;
-    notifyListeners();
+    // notifyListeners();
   }
 
   set secondaryColor(Color color) {
