@@ -33,7 +33,10 @@ class PrinterestMenu extends StatelessWidget {
 
     return ChangeNotifierProvider(
         create: (_) => _MenuModel(),
-        child: _PrinterestMenuBackground(child: _MenuItems(menuItems: items)));
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: 250),
+          opacity: (show) ? 1 : 0,
+          child: _PrinterestMenuBackground(child: _MenuItems(menuItems: items))));
   }
 }
 

@@ -2,21 +2,25 @@ import 'package:disenos_app/src/widgets/printerest_menu.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
 class PrinterestPage extends StatelessWidget {
   const PrinterestPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          PrinterestGridView(),
-          _PrinterestMenuLocation(),
-        ],
+    return ChangeNotifierProvider(
+      create: (_) => _MenuModel(),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            PrinterestGridView(),
+            _PrinterestMenuLocation(),
+          ],
+        ),
+        //PrinterestMenu(),
+        //PrinterestGridView(),
       ),
-      //PrinterestMenu(),
-      //PrinterestGridView(),
     );
   }
 }
@@ -29,11 +33,13 @@ class _PrinterestMenuLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double widthScreen = MediaQuery.of(context).size.width;
+    final show = Provider.of<_MenuModel>(context).show;
+
     return Positioned(
         bottom: 30.0,
         child: Container(
           width: widthScreen,
-          child: Align(child: PrinterestMenu()),
+          child: Align(child: PrinterestMenu(show: show,)),
         ));
   }
 }
@@ -56,9 +62,9 @@ class _PrinterestGridViewState extends State<PrinterestGridView> {
       //print('scroll listener: ${controller.offset} ');
 
       if (controller.offset > scrollState) {
-        print('ocultar menu');
+        Provider.of<_MenuModel>(context, listen: false).show = false;
       } else {
-        print('mostrar menu');
+        Provider.of<_MenuModel>(context, listen: false).show = true;
       }
 
       scrollState = controller.offset;
@@ -139,5 +145,16 @@ class Tile extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class _MenuModel with ChangeNotifier {
+  bool _show = true;
+
+  bool get show => _show;
+
+  set show(bool value) {
+    _show = value;
+    notifyListeners();
   }
 }
