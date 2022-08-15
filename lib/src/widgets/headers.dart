@@ -260,8 +260,7 @@ class _HeaderGradientPainter extends CustomPainter {
           0.2,
           0.5,
           1.0
-        ]
-        );
+        ]);
 
     final paint = Paint()..shader = gradient.createShader(rect);
     paint.color = const Color(0xff615AAB);
@@ -283,5 +282,28 @@ class _HeaderGradientPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class IconHeader extends StatelessWidget {
+  const IconHeader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 300.0,
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80.0)),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+          Color(0xff526BF6),
+          Color(0xff67ACF2)
+        ])
+      ),
+    );
   }
 }
