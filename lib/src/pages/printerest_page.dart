@@ -39,7 +39,34 @@ class _PrinterestMenuLocation extends StatelessWidget {
         bottom: 30.0,
         child: Container(
           width: widthScreen,
-          child: Align(child: PrinterestMenu(show: show,)),
+          child: Align(
+              child: PrinterestMenu(
+            show: show,
+            backgroundColor: Colors.red,
+            primaryColor: Colors.white,
+            children: [
+              PrinterestButton(
+                  onPressed: () {
+                    print('Icon pie chart');
+                  },
+                  icon: Icons.pie_chart),
+              PrinterestButton(
+                  onPressed: () {
+                    print('Icon search');
+                  },
+                  icon: Icons.search),
+              PrinterestButton(
+                  onPressed: () {
+                    print('Icon notifications');
+                  },
+                  icon: Icons.notifications),
+              PrinterestButton(
+                  onPressed: () {
+                    print('Icon supervised user circle');
+                  },
+                  icon: Icons.supervised_user_circle),
+            ],
+          )),
         ));
   }
 }

@@ -2,41 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PrinterestMenu extends StatelessWidget {
-  const PrinterestMenu({Key? key, this.show = true}) : super(key: key);
+  const PrinterestMenu(
+      {Key? key,
+      required this.children,
+      this.show = true,
+      this.backgroundColor = Colors.white,
+      this.primaryColor = Colors.black,
+      this.secondaryColor = Colors.blueGrey})
+      : super(key: key);
+
+  final List<PrinterestButton> children;
 
   final bool show;
 
+  final Color backgroundColor;
+  final Color primaryColor;
+  final Color secondaryColor;
+
   @override
   Widget build(BuildContext context) {
-    final List<PrinterestButton> items = [
-    PrinterestButton(
-        onPressed: () {
-          print('Icon pie chart');
-        },
-        icon: Icons.pie_chart),
-    PrinterestButton(
-        onPressed: () {
-          print('Icon search');
-        },
-        icon: Icons.search),
-    PrinterestButton(
-        onPressed: () {
-          print('Icon notifications');
-        },
-        icon: Icons.notifications),
-    PrinterestButton(
-        onPressed: () {
-          print('Icon supervised user circle');
-        },
-        icon: Icons.supervised_user_circle),
-  ];
-
     return ChangeNotifierProvider(
         create: (_) => _MenuModel(),
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: 250),
-          opacity: (show) ? 1 : 0,
-          child: _PrinterestMenuBackground(child: _MenuItems(menuItems: items))));
+        child: Builder(builder: (BuildContext context) {
+          Future.microtask(() {
+            Provider.of<_MenuModel>(context, listen: false).backgroundColor =
+                backgroundColor;
+            Provider.of<_MenuModel>(context, listen: false).primaryColor =
+                primaryColor;
+            Provider.of<_MenuModel>(context, listen: false).secondaryColor =
+                secondaryColor;
+          });
+
+          return AnimatedOpacity(
+            duration: Duration(milliseconds: 250),
+            opacity: (show) ? 1 : 0,
+            child: _PrinterestMenuBackground(
+              child: _MenuItems(menuItems: children),
+            ),
+          );
+        }));
   }
 }
 
@@ -52,7 +56,7 @@ class _PrinterestMenuBackground extends StatelessWidget {
       width: 250.0,
       height: 60.0,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: Provider.of<_MenuModel>(context).backgroundColor,
           borderRadius: BorderRadius.all(Radius.circular(100.0)),
           boxShadow: [
             BoxShadow(
@@ -93,7 +97,9 @@ class _PrinterestMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemSelecionado = Provider.of<_MenuModel>(context).itemSelecionado;
+    //final itemSelecionado = Provider.of<_MenuModel>(context).itemSelecionado;
+
+    final menuModel = Provider.of<_MenuModel>(context);
 
     return GestureDetector(
         onTap: () {
@@ -105,8 +111,10 @@ class _PrinterestMenuButton extends StatelessWidget {
         child: Container(
           child: Icon(
             menuItem.icon,
-            size: (itemSelecionado == index) ? 35.0 : 25.0,
-            color: (itemSelecionado == index) ? Colors.black : Colors.blueGrey,
+            size: (menuModel.itemSelecionado == index) ? 35.0 : 25.0,
+            color: (menuModel.itemSelecionado == index)
+                ? menuModel.primaryColor
+                : menuModel.secondaryColor,
           ),
         ));
   }
@@ -121,11 +129,35 @@ class PrinterestButton {
 
 class _MenuModel with ChangeNotifier {
   int _itemSelecionado = 0;
+  Color _backgroundColor = Colors.white;
+  Color _primaryColor = Colors.black;
+  Color _secondaryColor = Colors.blueGrey;
 
   int get itemSelecionado => _itemSelecionado;
 
+  Color get backgroundColor => _backgroundColor;
+
+  Color get primaryColor => _primaryColor;
+
+  Color get secondaryColor => _secondaryColor;
+
   set itemSelecionado(int index) {
     _itemSelecionado = index;
+    notifyListeners();
+  }
+
+  set backgroundColor(Color value) {
+    _backgroundColor = value;
+    notifyListeners();
+  }
+
+  set primaryColor(Color value) {
+    _primaryColor = value;
+    notifyListeners();
+  }
+
+  set secondaryColor(Color value) {
+    _secondaryColor = value;
     notifyListeners();
   }
 }
