@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HeaderCuadrado extends StatelessWidget {
   const HeaderCuadrado({Key? key}) : super(key: key);
@@ -286,7 +287,74 @@ class _HeaderGradientPainter extends CustomPainter {
 }
 
 class IconHeader extends StatelessWidget {
-  const IconHeader({Key? key}) : super(key: key);
+  const IconHeader(
+      {Key? key,
+      required this.icon,
+      required this.title,
+      required this.subtitle,
+      this.color1 = const Color(0xff526BF6),
+      this.color2 = const Color(0xff67ACF2)})
+      : super(key: key);
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color1;
+  final Color color2;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color colorBlanco = Colors.white.withOpacity(0.7);
+
+    return Stack(
+      children: [
+        _IconHeaderBackground(color1: color1, color2: color2,),
+        Positioned(
+          top: -50.0,
+          left: -70.0,
+          child: FaIcon(FontAwesomeIcons.plus,
+              size: 250.0, color: Colors.white.withOpacity(0.2)),
+        ),
+        Column(
+          children: [
+            const SizedBox(
+              height: 80.0,
+              width: double.infinity,
+            ),
+            Text(
+              title,
+              style: TextStyle(fontSize: 20.0, color: colorBlanco),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Text(
+              subtitle,
+              style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold,
+                  color: colorBlanco),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            FaIcon(icon, size: 80.0, color: Colors.white)
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class _IconHeaderBackground extends StatelessWidget {
+  const _IconHeaderBackground({
+    Key? key,
+    required this.color1,
+    required this.color2
+  }) : super(key: key);
+
+  final Color color1;
+  final Color color2;
 
   @override
   Widget build(BuildContext context) {
@@ -294,16 +362,12 @@ class IconHeader extends StatelessWidget {
       width: double.infinity,
       height: 300.0,
       decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80.0)),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-          Color(0xff526BF6),
-          Color(0xff67ACF2)
-        ])
-      ),
+          color: Colors.red,
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80.0)),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [color1, color2])),
     );
   }
 }
