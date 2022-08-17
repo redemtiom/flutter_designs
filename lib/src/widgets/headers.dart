@@ -322,14 +322,14 @@ class IconHeader extends StatelessWidget {
               width: double.infinity,
             ),
             Text(
-              title,
+              subtitle,
               style: TextStyle(fontSize: 20.0, color: colorBlanco),
             ),
             const SizedBox(
               height: 20.0,
             ),
             Text(
-              subtitle,
+              title,
               style: TextStyle(
                   fontSize: 25.0,
                   fontWeight: FontWeight.bold,
