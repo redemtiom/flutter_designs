@@ -1,7 +1,8 @@
 //import 'package:disenos_app/src/pages/animaciones_page.dart';
 //import 'package:disenos_app/src/retos/cuadrado_animado_reto.dart';
 //import 'package:disenos_app/src/pages/graficas_circulares_page.dart';
-import 'package:disenos_app/src/pages/emergency_page.dart';
+//import 'package:disenos_app/src/pages/emergency_page.dart';
+import 'package:disenos_app/src/pages/sliver_list_page.dart';
 //import 'package:disenos_app/src/pages/printerest_page.dart';
 //import 'package:disenos_app/src/labs/slideshow_page.dart';
 //import 'package:disenos_app/src/pages/slideshow_page.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const EmergencyPage(),
+      home: const SliverListPage(),
     );
   }
 }
