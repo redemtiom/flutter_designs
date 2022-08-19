@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:disenos_app/src/routes/routes.dart';
+import 'package:provider/provider.dart';
+import 'package:disenos_app/src/theme/themechanger.dart';
 
 class LauncherPage extends StatelessWidget {
   const LauncherPage({Key? key}) : super(key: key);
@@ -23,6 +25,9 @@ class _MenuPrincipal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Provider.of<ThemeChanger>(context);
+    final accentColor = appTheme.currenTheme!.accentColor;
+
     return Drawer(
       child: Container(
         child: Column(
@@ -33,7 +38,7 @@ class _MenuPrincipal extends StatelessWidget {
                 width: double.infinity,
                 height: 200.0,
                 child: CircleAvatar(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: accentColor,
                   child: Text(
                     'FH',
                     style: TextStyle(
@@ -47,25 +52,25 @@ class _MenuPrincipal extends StatelessWidget {
             ListTile(
               leading: Icon(
                 Icons.lightbulb_outline,
-                color: Colors.blue,
+                color: accentColor,
               ),
               title: Text('Dark Mode'),
               trailing: Switch.adaptive(
-                value: true,
-                activeColor: Colors.blue,
-                onChanged: (value) {},
+                value: appTheme.darkTheme,
+                activeColor: accentColor,
+                onChanged: (value) => appTheme.darkTheme = value,
               ),
             ),
             ListTile(
               leading: Icon(
                 Icons.add_to_home_screen,
-                color: Colors.blue,
+                color: accentColor,
               ),
               title: Text('Custom Theme'),
               trailing: Switch.adaptive(
-                value: true,
-                activeColor: Colors.blue,
-                onChanged: (value) {},
+                value: appTheme.customTheme,
+                activeColor: accentColor,
+                onChanged: (value) => appTheme.customTheme = value,
               ),
             ),
           ],
@@ -80,21 +85,29 @@ class _ListaOpciones extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Provider.of<ThemeChanger>(context).currenTheme;
+
     return ListView.separated(
       physics: BouncingScrollPhysics(),
       separatorBuilder: (context, index) => Divider(
-        color: Colors.blue,
+        color: appTheme!.primaryColorLight,
       ),
       itemCount: pageRoutes.length,
       itemBuilder: (context, index) => ListTile(
-        leading: FaIcon(pageRoutes[index].icon, color: Colors.blue),
+        leading: FaIcon(
+          pageRoutes[index].icon,
+          color: appTheme!.accentColor,
+        ),
         title: Text(pageRoutes[index].titulo),
         trailing: Icon(
           Icons.chevron_right,
-          color: Colors.blue,
+          color: appTheme.accentColor,
         ),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => pageRoutes[index].page )));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => pageRoutes[index].page)));
         },
       ),
     );

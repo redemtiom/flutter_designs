@@ -5,15 +5,18 @@ import 'package:disenos_app/src/pages/emergency_page.dart';
 import 'package:disenos_app/src/pages/launcher_page.dart';
 //import 'package:disenos_app/src/pages/emergency_page.dart';
 import 'package:disenos_app/src/pages/sliver_list_page.dart';
+import 'package:disenos_app/src/theme/themechanger.dart';
 //import 'package:disenos_app/src/pages/printerest_page.dart';
 //import 'package:disenos_app/src/labs/slideshow_page.dart';
 //import 'package:disenos_app/src/pages/slideshow_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 //import 'package:disenos_app/src/pages/headers_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (_) => ThemeChanger(1), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,13 +25,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final currenTheme = Provider.of<ThemeChanger>(context).currenTheme;
+
     return MaterialApp(
       title: 'Disenos App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: currenTheme,
       home: const LauncherPage(),
     );
   }
 }
-
