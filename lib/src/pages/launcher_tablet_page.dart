@@ -1,3 +1,4 @@
+import 'package:disenos_app/src/pages/slideshow_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -5,17 +6,39 @@ import 'package:disenos_app/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:disenos_app/src/theme/themechanger.dart';
 
-class LauncherPage extends StatelessWidget {
-  const LauncherPage({Key? key}) : super(key: key);
+class LauncherTabletPage extends StatelessWidget {
+  const LauncherTabletPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Provider.of<ThemeChanger>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Disenos en telefono'),
+        title: Text('DIsenos en flutter - Tablet'),
+        backgroundColor: appTheme.currenTheme!.accentColor,
       ),
       drawer: _MenuPrincipal(),
-      body: _ListaOpciones(),
+      body: Row(
+        children: [
+          Container(
+            width: 300,
+            height: double.infinity,
+            child: _ListaOpciones(),
+          ),
+          Container(
+            width: 1.0,
+            height: double.infinity,
+            color: (appTheme.darkTheme)
+                ? Colors.grey
+                : appTheme.currenTheme!.accentColor,
+          ),
+          Expanded(
+            child: SlideshowPage(),
+          )
+        ],
+      ),
+      //body: _ListaOpciones(),
     );
   }
 }

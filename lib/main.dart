@@ -3,6 +3,7 @@
 //import 'package:disenos_app/src/pages/graficas_circulares_page.dart';
 import 'package:disenos_app/src/pages/emergency_page.dart';
 import 'package:disenos_app/src/pages/launcher_page.dart';
+import 'package:disenos_app/src/pages/launcher_tablet_page.dart';
 //import 'package:disenos_app/src/pages/emergency_page.dart';
 import 'package:disenos_app/src/pages/sliver_list_page.dart';
 import 'package:disenos_app/src/theme/themechanger.dart';
@@ -15,8 +16,14 @@ import 'package:provider/provider.dart';
 //import 'package:disenos_app/src/pages/headers_page.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (_) => ThemeChanger(1), child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeChanger(1)),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +37,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Disenos App',
       theme: currenTheme,
-      home: const LauncherPage(),
+      home: OrientationBuilder(
+          builder: (BuildContext context, Orientation orientation) {
+        final screenSize = MediaQuery.of(context).size;
+
+        if (screenSize.width > 500) {
+          return LauncherTabletPage();
+        } else {
+          return LauncherPage();
+        }
+
+        // print('Orientation: $orientation');
+        // return Container(
+        //   child: LauncherPage(),
+        // );
+      }),
     );
   }
 }
