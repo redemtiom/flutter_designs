@@ -1,3 +1,4 @@
+import 'package:disenos_app/src/theme/themechanger.dart';
 import 'package:disenos_app/src/widgets/printerest_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,7 @@ class _PrinterestMenuLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final double widthScreen = MediaQuery.of(context).size.width;
     final show = Provider.of<_MenuModel>(context).show;
+    final appTheme = Provider.of<ThemeChanger>(context).currenTheme;
 
     return Positioned(
         bottom: 30.0,
@@ -42,8 +44,8 @@ class _PrinterestMenuLocation extends StatelessWidget {
           child: Align(
               child: PrinterestMenu(
             show: show,
-            backgroundColor: Colors.red,
-            primaryColor: Colors.white,
+            backgroundColor: appTheme!.scaffoldBackgroundColor,
+            primaryColor: appTheme.accentColor,
             children: [
               PrinterestButton(
                   onPressed: () {

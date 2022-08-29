@@ -1,6 +1,8 @@
+import 'package:disenos_app/src/theme/themechanger.dart';
 import 'package:disenos_app/src/widgets/neon_text.dart';
 import 'package:disenos_app/src/widgets/radial_progress.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class GraficasCircularesPage extends StatefulWidget {
   const GraficasCircularesPage({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class _GraficasCircularesPageState extends State<GraficasCircularesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       floatingActionButton: FloatingActionButton(
         child: Container(
           width: double.infinity,
@@ -51,15 +53,27 @@ class _GraficasCircularesPageState extends State<GraficasCircularesPage> {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  CustomRadialProgress(porcentaje: porcentaje, color: Colors.lightBlue,),
-                  NeonText(message: porcentaje.toString(), color: Colors.lightBlue,),
+                  CustomRadialProgress(
+                    porcentaje: porcentaje,
+                    color: Colors.lightBlue,
+                  ),
+                  NeonText(
+                    message: porcentaje.toString(),
+                    color: Colors.lightBlue,
+                  ),
                 ],
               ),
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  CustomRadialProgress(porcentaje: porcentaje, color: Colors.cyan,),
-                  NeonText(message: porcentaje.toString(), color: Colors.cyan,),
+                  CustomRadialProgress(
+                    porcentaje: porcentaje,
+                    color: Colors.cyan,
+                  ),
+                  NeonText(
+                    message: porcentaje.toString(),
+                    color: Colors.cyan,
+                  ),
                 ],
               ),
             ],
@@ -70,15 +84,27 @@ class _GraficasCircularesPageState extends State<GraficasCircularesPage> {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  CustomRadialProgress(porcentaje: porcentaje, color: Colors.amber,),
-                  NeonText(message: porcentaje.toString(), color: Colors.amber,),
+                  CustomRadialProgress(
+                    porcentaje: porcentaje,
+                    color: Colors.amber,
+                  ),
+                  NeonText(
+                    message: porcentaje.toString(),
+                    color: Colors.amber,
+                  ),
                 ],
               ),
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  CustomRadialProgress(porcentaje: porcentaje, color: Colors.deepOrange,),
-                  NeonText(message: porcentaje.toString(), color: Colors.deepOrange,),
+                  CustomRadialProgress(
+                    porcentaje: porcentaje,
+                    color: Colors.deepOrange,
+                  ),
+                  NeonText(
+                    message: porcentaje.toString(),
+                    color: Colors.deepOrange,
+                  ),
                 ],
               ),
             ],
@@ -101,13 +127,15 @@ class CustomRadialProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Provider.of<ThemeChanger>(context).currenTheme;
+
     return Container(
       width: 200,
       height: 200,
       child: RadialProgress(
         porcentaje: porcentaje,
         colorPrimario: color,
-        colorSecundario: Colors.white,
+        colorSecundario: appTheme!.textTheme.bodyText1!.color ?? Colors.white,//Colors.white,
         grosorSecundario: 10,
         grosorPrimario: 4,
       ),
