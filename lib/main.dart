@@ -1,6 +1,7 @@
 //import 'package:disenos_app/src/pages/animaciones_page.dart';
 //import 'package:disenos_app/src/retos/cuadrado_animado_reto.dart';
 //import 'package:disenos_app/src/pages/graficas_circulares_page.dart';
+import 'package:disenos_app/src/models/layout_model.dart';
 import 'package:disenos_app/src/pages/emergency_page.dart';
 import 'package:disenos_app/src/pages/launcher_page.dart';
 import 'package:disenos_app/src/pages/launcher_tablet_page.dart';
@@ -19,7 +20,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeChanger(1)),
+        ChangeNotifierProvider<ThemeChanger>(create: (_) => ThemeChanger(1)),
+        ChangeNotifierProvider<LayoutModel>(create: (_)=> LayoutModel()),
       ],
       child: const MyApp(),
     ),

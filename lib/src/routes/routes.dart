@@ -10,7 +10,7 @@ import 'package:disenos_app/src/pages/printerest_page.dart';
 import 'package:disenos_app/src/pages/sliver_list_page.dart';
 
 final pageRoutes =<_Route>[
-  _Route(FontAwesomeIcons.slideshare, 'SlideShow', const MiSlideShow()),
+  _Route(FontAwesomeIcons.slideshare, 'SlideShow', const SlideshowPage()),
   _Route(FontAwesomeIcons.truckMedical, 'Emergencia', const EmergencyPage()),
   _Route(FontAwesomeIcons.heading, 'Encabezados', const HeadersPage()),
   _Route(FontAwesomeIcons.peopleCarryBox, 'Cuadro Animado', const CuadradoAnimado()),

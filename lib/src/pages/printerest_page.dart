@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:disenos_app/src/theme/themechanger.dart';
 import 'package:disenos_app/src/widgets/printerest_menu.dart';
 import 'package:flutter/material.dart';
@@ -33,20 +35,26 @@ class _PrinterestMenuLocation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double widthScreen = MediaQuery.of(context).size.width;
+    double widthScreen = MediaQuery.of(context).size.width;
     final show = Provider.of<_MenuModel>(context).show;
     final appTheme = Provider.of<ThemeChanger>(context).currenTheme;
+
+    if (widthScreen > 500) {
+      widthScreen = widthScreen - 300;
+    }
 
     return Positioned(
         bottom: 30.0,
         child: Container(
           width: widthScreen,
-          child: Align(
-              child: PrinterestMenu(
-            show: show,
-            backgroundColor: appTheme!.scaffoldBackgroundColor,
-            primaryColor: appTheme.accentColor,
+          child: Row(
             children: [
+              const Spacer(),
+              PrinterestMenu(
+                show: show,
+                backgroundColor: appTheme!.scaffoldBackgroundColor,
+                primaryColor: appTheme.accentColor,
+                children: [
               PrinterestButton(
                   onPressed: () {
                     print('Icon pie chart');
@@ -67,8 +75,11 @@ class _PrinterestMenuLocation extends StatelessWidget {
                     print('Icon supervised user circle');
                   },
                   icon: Icons.supervised_user_circle),
+                ],
+              ),
+              const Spacer(),
             ],
-          )),
+          ),
         ));
   }
 }
@@ -111,9 +122,17 @@ class _PrinterestGridViewState extends State<PrinterestGridView> {
 
   @override
   Widget build(BuildContext context) {
+    int count;
+
+    if (MediaQuery.of(context).size.width > 500) {
+      count = 3;
+    } else {
+      count = 2;
+    }
+
     return MasonryGridView.count(
       controller: controller,
-      crossAxisCount: 2,
+      crossAxisCount: count,
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
       //itemCount: 4,

@@ -1,3 +1,4 @@
+import 'package:disenos_app/src/models/layout_model.dart';
 import 'package:disenos_app/src/pages/slideshow_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,6 +13,7 @@ class LauncherTabletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = Provider.of<ThemeChanger>(context);
+    final layoutModel = Provider.of<LayoutModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +36,7 @@ class LauncherTabletPage extends StatelessWidget {
                 : appTheme.currenTheme!.accentColor,
           ),
           Expanded(
-            child: SlideshowPage(),
+            child: layoutModel.currentPage,
           )
         ],
       ),
@@ -109,6 +111,7 @@ class _ListaOpciones extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = Provider.of<ThemeChanger>(context).currenTheme;
+    final layoutModel = Provider.of<LayoutModel>(context);
 
     return ListView.separated(
       physics: BouncingScrollPhysics(),
@@ -127,10 +130,8 @@ class _ListaOpciones extends StatelessWidget {
           color: appTheme.accentColor,
         ),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: ((context) => pageRoutes[index].page)));
+          final layoutModel = Provider.of<LayoutModel>(context, listen: false);
+          layoutModel.currentPage = pageRoutes[index].page;
         },
       ),
     );
